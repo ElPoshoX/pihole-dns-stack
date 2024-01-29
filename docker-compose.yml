@@ -1,0 +1,71 @@
+---
+version: "3.8"
+services:
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    hostname: $CLOUDFLARE_HOSTNAME
+    container_name: $CLOUDFLARE_HOSTNAME
+    command: proxy-dns
+    # See the list of environment variables at https://github.com/cloudflare/cloudflared/blob/master/cmd/cloudflared/proxydns/cmd.go
+    environment:
+      TZ: $TZ
+      TUNNEL_DNS_UPSTREAM: "https://1.0.0.1/dns-query,https://1.1.1.1/dns-query"
+      # Listen on an unprivileged port
+      TUNNEL_DNS_PORT: 5053
+      # Listen on all interfaces
+      TUNNEL_DNS_ADDRESS: "0.0.0.0"
+      TUNNEL_METRICS: 0.0.0.0:9090
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    restart: unless-stopped
+    networks:
+      - home-server
+
+  pihole:
+    image: pihole/pihole:2024.01.0
+    hostname: $PIHOLE_HOSTNAME
+    container_name: $PIHOLE_HOSTNAME
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "67:67/udp"
+      - "9081:80/tcp"
+      - "9543:443/tcp"
+    environment:
+      TZ: $TZ
+      WEBPASSWORD: "$PIHOLE_PASSWORD"
+      FTL_CMD: no-daemon -- --dns-forward-max 5096 --min-cache-ttl 300
+      QUERY_LOGGING: true
+      WEBTHEME: "default-dark"
+      #FTLCONF_LOCAL_IPV4: $PIHOLE_NETWORK_IP
+      PIHOLE_DNS_: "$CLOUDFLARE_HOSTNAME#5053"
+      PIHOLE_DOMAIN: local
+      FTLCONF_RATE_LIMIT: "5000/60"
+      VIRTUAL_HOST: pihole-primary.local
+    labels:
+      caddy: pihole-primary.local
+      caddy.reverse_proxy: "{{upstreams 80}}"
+    volumes:
+      - $EXT_DRIVE_ETC_PIHOLE:/etc/pihole
+      - ./etc-dnsmasq.d/:/etc/dnsmasq.d
+      
+    cap_add:
+      - NET_ADMIN
+    restart: unless-stopped
+    extra_hosts:
+      - "portainer portainer.local:$DEVICE_IP"
+      - "pihole-primary pihole-primary.local:$DEVICE_IP"
+      - "grafana grafana.local:$DEVICE_IP"
+      - "prometheus prometheus.local:$DEVICE_IP"
+      - "cadvisor cadvisor.local:$DEVICE_IP"
+      - "node-exporter node-exporter.local:$DEVICE_IP"
+      - "alert-manager alert-manager.local:$DEVICE_IP"
+      - "plex plex.local:$DEVICE_IP"
+    depends_on:
+      - cloudflared
+    networks:
+      - home-server
+
+networks:
+  home-server:
+    external: true
