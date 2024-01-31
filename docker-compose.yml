@@ -37,7 +37,7 @@ services:
       FTL_CMD: no-daemon -- --dns-forward-max 5096 --min-cache-ttl 300
       QUERY_LOGGING: true
       WEBTHEME: "default-dark"
-      #FTLCONF_LOCAL_IPV4: $PIHOLE_NETWORK_IP
+      FTLCONF_LOCAL_IPV4: $PIHOLE_NETWORK_IP
       PIHOLE_DNS_: "$CLOUDFLARE_HOSTNAME#5053"
       PIHOLE_DOMAIN: local
       FTLCONF_RATE_LIMIT: "5000/60"
@@ -64,7 +64,8 @@ services:
     depends_on:
       - cloudflared
     networks:
-      - home-server
+      home-server:
+        ipv4_address: $PIHOLE_NETWORK_IP
 
 networks:
   home-server:
