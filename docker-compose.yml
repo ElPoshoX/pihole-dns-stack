@@ -40,7 +40,7 @@ services:
       QUERY_LOGGING: true
       WEBTHEME: "default-dark"
       FTLCONF_LOCAL_IPV4: $PIHOLE_NETWORK_IP
-      PIHOLE_DNS_: "$CLOUDFLARE_HOSTNAME#5053"
+      PIHOLE_DNS_: "$CLOUDFLARED_NETWORK_IP#5053"
       PIHOLE_DOMAIN: local
       FTLCONF_RATE_LIMIT: "5000/60"
       VIRTUAL_HOST: pihole-primary.local
