@@ -19,7 +19,9 @@ services:
       - /etc/localtime:/etc/localtime:ro
     restart: unless-stopped
     networks:
-      - home-server
+      home-server:
+        ipv4_address: $CLOUDFLARED_NETWORK_IP
+
 
   pihole:
     image: pihole/pihole:2024.01.0
