@@ -63,6 +63,8 @@ services:
       - "node-exporter node-exporter.local:$DEVICE_IP"
       - "alert-manager alert-manager.local:$DEVICE_IP"
       - "plex plex.local:$DEVICE_IP"
+      - "deluge deluge.local:$DEVICE_IP"
+      - "prowlarr prowlarr.local:$DEVICE_IP"
     depends_on:
       - cloudflared
     networks:
