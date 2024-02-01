@@ -65,6 +65,8 @@ services:
       - "plex plex.local:$DEVICE_IP"
       - "deluge deluge.local:$DEVICE_IP"
       - "prowlarr prowlarr.local:$DEVICE_IP"
+      - "sonarr sonarr.local:$DEVICE_IP"
+      - "radarr radarr.local:$DEVICE_IP"
     depends_on:
       - cloudflared
     networks:
