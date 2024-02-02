@@ -69,6 +69,8 @@ services:
       - "radarr radarr.local:$DEVICE_IP"
       - "bazarr bazarr.local:$DEVICE_IP"
       - "flaresolverr flaresolverr.local:$DEVICE_IP"
+      - "overseerr overseerr.local:$DEVICE_IP"
+      - "autobrr autobrr.local:$DEVICE_IP"
     depends_on:
       - cloudflared
     networks:
