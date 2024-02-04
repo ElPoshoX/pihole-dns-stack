@@ -71,6 +71,7 @@ services:
       - "flaresolverr flaresolverr.local:$DEVICE_IP"
       - "overseerr overseerr.local:$DEVICE_IP"
       - "autobrr autobrr.local:$DEVICE_IP"
+      - "qbittorrent qbittorrent.local:$DEVICE_IP"
     depends_on:
       - cloudflared
     networks:
