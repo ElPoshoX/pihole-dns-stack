@@ -72,6 +72,7 @@ services:
       - "overseerr overseerr.local:$DEVICE_IP"
       - "autobrr autobrr.local:$DEVICE_IP"
       - "qbittorrent qbittorrent.local:$DEVICE_IP"
+      - "homarr homarr.local:$DEVICE_IP"
     depends_on:
       - cloudflared
     networks:
