@@ -63,16 +63,14 @@ services:
       - "node-exporter node-exporter.local:$DEVICE_IP"
       - "alert-manager alert-manager.local:$DEVICE_IP"
       - "plex plex.local:$DEVICE_IP"
-      - "deluge deluge.local:$DEVICE_IP"
       - "prowlarr prowlarr.local:$DEVICE_IP"
       - "sonarr sonarr.local:$DEVICE_IP"
       - "radarr radarr.local:$DEVICE_IP"
       - "bazarr bazarr.local:$DEVICE_IP"
       - "flaresolverr flaresolverr.local:$DEVICE_IP"
       - "overseerr overseerr.local:$DEVICE_IP"
-      - "autobrr autobrr.local:$DEVICE_IP"
       - "qbittorrent qbittorrent.local:$DEVICE_IP"
-      - "homarr homarr.local:$DEVICE_IP"
+      - "readarr readarr.local:$DEVICE_IP"
     depends_on:
       - cloudflared
     networks:
